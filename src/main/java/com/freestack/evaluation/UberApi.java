@@ -68,21 +68,9 @@ public class UberApi {
         EntityManager em = EntityManagerFactorySingleton.getInstance().createEntityManager();
         try {
             em.getTransaction().begin();
-            /*Query queryBooking = em.createQuery("select b from Booking b where b.id = :id");
-            queryBooking.setParameter("id", booking1.getId());
-            Booking booking1db = (Booking) queryBooking.getSingleResult();
 
-            booking1db.getDriver().setAvailable(true);
-            booking1db.setEndOfTheBooking(LocalDateTime.now());*/
-
-            out.println(">> FIN DE RESERVATION 1" + booking1);
-
-            //em.merge(booking1);
             booking1.setEndOfTheBooking(LocalDateTime.now());
             booking1.getDriver().setAvailable(true);
-
-            out.println(">> FIN DE RESERVATION 2" + booking1);
-            //out.println(">> FIN DE RESERVATION" + booking1db);
 
             em.merge(booking1);
             em.merge(booking1.getDriver());
@@ -99,19 +87,8 @@ public class UberApi {
         EntityManager em = EntityManagerFactorySingleton.getInstance().createEntityManager();
         try {
             em.getTransaction().begin();
-/*            Booking bookingToEvaluate = em.find(Booking.class, booking1.getId());
 
-            bookingToEvaluate.setEvaluation(evaluationOfTheUser);
-            out.println(">> AVANT EVAL" + booking1);
-            out.println(">> APRES EVAL" + bookingToEvaluate);
-
-            em.persist(bookingToEvaluate);*/
-            out.println(">> EVAL 1 " + booking1);
-
-            //em.merge(booking1);
             booking1.setEvaluation(evaluationOfTheUser);
-
-            out.println(">> EVAL 2 " + booking1);
 
             em.merge(booking1);
             em.getTransaction().commit();
@@ -133,9 +110,6 @@ public class UberApi {
             queryBooking.setParameter("id", uberDriver.getId());
             List<Booking> bookings = queryBooking.getResultList();
 
-            out.println(">> LISTE DES RESERVATIONS DU CHAUFFEUR : ");
-            bookings.forEach(booking -> out.println(booking));
-
             return bookings;
 
         } finally {
@@ -150,9 +124,6 @@ public class UberApi {
 
             Query queryUnfinishedBooking = em.createQuery("select b from Booking b where b.endOfTheBooking = null");
             List<Booking> unfinishedBookings = queryUnfinishedBooking.getResultList();
-
-            out.println(">> RESERVATIONS EN COURS : ");
-            unfinishedBookings.forEach(booking -> out.println(booking));
 
             return unfinishedBookings;
 
@@ -171,8 +142,6 @@ public class UberApi {
             Double meanScore = (Double) queryEval.getSingleResult();
 
             float meanScoreF = meanScore.floatValue();
-
-            out.println(">> NOTE MOYENNE DU CHAUFFEUR : " + meanScore);
 
             return meanScoreF;
 
