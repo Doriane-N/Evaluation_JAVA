@@ -45,7 +45,7 @@ public class UberApi {
             newBooking.setStartOfTheBooking(LocalDateTime.now());
 
             Query queryAllAvailableDrivers = em.createQuery("select d from UberDriver d where d.available = true");
-            List<UberDriver> availableDrivers = queryAllAvailableDrivers.getResultList();
+            List<UberDriver> availableDrivers = queryAllAvailableDrivers.setMaxResults(1).getResultList();
 
             if (availableDrivers.isEmpty()) {
                 newBooking = null;
